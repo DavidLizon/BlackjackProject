@@ -1,6 +1,6 @@
 # BlackjackProject
 
-More stuff about program.
+More stuff about program. 
 
 # Lessons Learned
 
