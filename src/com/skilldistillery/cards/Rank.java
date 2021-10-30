@@ -5,12 +5,18 @@ public enum Rank {
 	
 	private final int value;
 	
-	Rank(int value ){
+	private Rank(int value ){
 		this.value = value;
 	}
 
 	public int getValue() {
 		return value;
+	}
+	
+	@Override
+	public String toString() {
+		String valueAsString = "" + value;
+		return valueAsString;
 	}
 	
 }

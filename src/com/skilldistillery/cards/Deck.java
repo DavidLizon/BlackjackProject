@@ -12,7 +12,6 @@ public class Deck {
 		}
 
 	private List<Card> createDeck(){
-
 		List<Card> buildDeck = new ArrayList<>(52);
 
 		for(Suit s : Suit.values()) {
@@ -22,11 +21,8 @@ public class Deck {
 		}
 		return buildDeck;
 	}
-	
-	public int checkDeckSize() {
-		return deck.size();
-	}
 
+	//	MOVED TO DEALING CLASS?????????????
 	public Card dealCard() {
 		Card card = deck.remove(0);
 		return card;
@@ -34,6 +30,24 @@ public class Deck {
 	
 	public void shuffle() {
 		Collections.shuffle(deck);
+	}
+
+//	SAME AS DECKSIZE
+//	public int cardsLeftInDeck() {
+//		int cardsLeft = 0;
+//		return cardsLeft = deck.size();
+//	}
+	
+	public int deckSize() {
+		return deck.size();
+	}
+
+	public List<Card> getDeck() {
+		return deck;
+	}
+
+	public void setDeck(List<Card> deck) {
+		this.deck = deck;
 	}
 
 }

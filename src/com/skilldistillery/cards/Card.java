@@ -8,7 +8,7 @@ public class Card {
 	private final Rank rank;
 	
 	
-	Card(Suit suit, Rank rank) {
+	public Card(Suit suit, Rank rank) {
 		this.suit = suit;
 		this.rank = rank;
 	}
@@ -17,14 +17,13 @@ public class Card {
 		return rank.getValue();
 	}
 
-	
 	public Rank getRank() {
 		return rank;
 	}
 
 	@Override
 	public String toString() {
-		return rank + " of " + suit;
+		return rank + " " + suit;
 	}
 
 	@Override
