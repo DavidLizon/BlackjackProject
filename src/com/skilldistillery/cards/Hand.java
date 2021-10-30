@@ -15,11 +15,11 @@ public class Hand{
 		inHand.add(card);
 	}
 	
-	public int getCardValue() {
-		inHand.get(getCardValue());
-		
-		return 0;
-	}
+//	public int getCardValue() {
+//		int value = 0;
+//		value = inHand.
+//		return value;
+//	}
 	
 	public int getHandValue() {
 		int totalValue = 0;
@@ -42,9 +42,10 @@ public class Hand{
 	}
 	
 	public void clearHand() {
+		int handSize = inHand.size();
+		System.out.println(handSize);
 		if (inHand != null) {
-//			inHand = new ArrayList<>();
-			for (int i = 0; i < inHand.size(); i++) {
+			for (int i = handSize - 1; i >= 0; i--) {
 				inHand.remove(i);
 			}
 		}

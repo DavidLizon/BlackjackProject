@@ -13,14 +13,9 @@ public class Dealer extends Player {
 
 	}
 
-	// Display message and starts game
-	public void welcomeMessage() {
-		System.out.println("Want to play a round of blackjack?");
-	}
 
 //	public void runGame(Dealer dealer, Player player) {
-	public void runGame() {
-		welcomeMessage();
+	public void setUpGame() {
 		getDeck();
 		shuffleDeck();
 //		NESTED REMOVE TEST TO SEE IF REMVOVES CARD AT ELEMENT 0
@@ -39,22 +34,27 @@ public class Dealer extends Player {
 		player.addCardToHand(deck.dealCard());
 	}
 
-	public void showTopCardDealer() {
-		hand.showTopCard();
-	}
+//	public void showTopCardDealer() {
+//		hand.showTopCard();
+//	}
 
 	// asks player to hit or stand
-	public void askHitOrStand() {
-		System.out.println("Would you like to hit or stand?");
+	public void askPlayerHitOrStand() {
+		System.out.println("Would you like to (1) hit or (2) stand?");
 	}
 
-	// - if hit give player another card
-
+	public boolean checkIfValueOver21(Player player) {
+		boolean over21 = false;
+		if(player.hand.getHandValue() > 21) {
+			over21 = true;
+		}
+		return over21;
+	}
+	
 	// - if player over 21 say bust and end game
-	public void handOver21() {
-		System.out.println();
+	public void handBusted21() {
+		System.out.println("Bust");
 	}
-	// show both dealer cards
 
 	// - if under 17 hit until 17 or over
 
