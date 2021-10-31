@@ -1,9 +1,7 @@
 package com.skilldistillery.cards;
 
 public enum Suit {
-//	HEARTS("Hearts"), SPADES("Spades"), CLUBS("Clubs"), DIAMONDS("Diamonds");
-	
-	// Use if want symbols not words
+	// Prints suit symbols
 	HEARTS("\u2665\uFE0F"), SPADES("\u2660\uFE0F"), CLUBS("\u2663\uFE0F"), DIAMONDS("\u2666\uFE0F");
 	
 	private final String name;
@@ -16,8 +14,4 @@ public enum Suit {
 	public String toString() {
 		return name;
 	}
-	
-	
-	
-
 }

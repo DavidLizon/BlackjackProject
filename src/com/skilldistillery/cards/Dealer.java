@@ -1,7 +1,7 @@
 package com.skilldistillery.cards;
 
 public class Dealer extends Player {
-	Deck deck;
+	protected Deck deck;
 
 	// public void testing diplay cards 0-5
 	public void shuffleTest() {
@@ -13,8 +13,6 @@ public class Dealer extends Player {
 
 	}
 
-
-//	public void runGame(Dealer dealer, Player player) {
 	public void setUpGame() {
 		getDeck();
 		shuffleDeck();
@@ -34,10 +32,6 @@ public class Dealer extends Player {
 		player.addCardToHand(deck.dealCard());
 	}
 
-//	public void showTopCardDealer() {
-//		hand.showTopCard();
-//	}
-
 	// asks player to hit or stand
 	public void askPlayerHitOrStand() {
 		System.out.println("Would you like to (1) hit or (2) stand?");
@@ -51,22 +45,29 @@ public class Dealer extends Player {
 		return over21;
 	}
 	
-	// - if player over 21 say bust and end game
+	public boolean checkIfValueIsEqualToOrOver17(Player player) {
+		boolean seventeenPlus = false;
+//		if(player.hand.getHandValue() >= 17 && player.hand.inHand.size() >= 2) {
+		if(player.hand.getHandValue() >= 17) {
+			seventeenPlus = true;
+		}
+		return seventeenPlus;
+	}
+	
+	public boolean hasBlackjack(Player player) {
+		boolean hasBlackjack = false;
+		if(player.hand.getHandValue() == 21) {
+			hasBlackjack = true;
+		}
+		return hasBlackjack;
+	}
+	
 	public void handBusted21() {
 		System.out.println("Bust");
 	}
 
-	// - if under 17 hit until 17 or over
-
-	// compare dealer hand to player hand
-
-	// - declare winner or tie
-
-	// ask to play another hand
 	public void anotherGame() {
 		System.out.println("Want to play another game?");
 	}
-
-	// -
 
 }

@@ -22,7 +22,6 @@ public class Deck {
 		return buildDeck;
 	}
 
-	//	MOVED TO DEALING CLASS?????????????
 	public Card dealCard() {
 		Card card = deck.remove(0);
 		return card;
@@ -32,22 +31,12 @@ public class Deck {
 		Collections.shuffle(deck);
 	}
 
-//	SAME AS DECKSIZE
-//	public int cardsLeftInDeck() {
-//		int cardsLeft = 0;
-//		return cardsLeft = deck.size();
-//	}
-	
 	public int deckSize() {
 		return deck.size();
 	}
 
 	public List<Card> getDeck() {
 		return deck;
-	}
-
-	public void setDeck(List<Card> deck) {
-		this.deck = deck;
 	}
 
 }

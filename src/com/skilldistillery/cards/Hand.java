@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Hand{
 
-	List<Card> inHand;
+	protected List<Card> inHand;
 
 	public Hand() {
 		inHand = new ArrayList<>();
@@ -14,12 +14,6 @@ public class Hand{
 	public void addCard(Card card) {
 		inHand.add(card);
 	}
-	
-//	public int getCardValue() {
-//		int value = 0;
-//		value = inHand.
-//		return value;
-//	}
 	
 	public int getHandValue() {
 		int totalValue = 0;
@@ -43,7 +37,6 @@ public class Hand{
 	
 	public void clearHand() {
 		int handSize = inHand.size();
-		System.out.println(handSize);
 		if (inHand != null) {
 			for (int i = handSize - 1; i >= 0; i--) {
 				inHand.remove(i);
