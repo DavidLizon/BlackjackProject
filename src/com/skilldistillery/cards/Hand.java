@@ -2,6 +2,7 @@ package com.skilldistillery.cards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Hand{
 
@@ -48,4 +49,24 @@ public class Hand{
 	public String toString() {
 		return "Hand [inHand=" + inHand + "]";
 	}
+
+
+@Override
+	public int hashCode() {
+		return Objects.hash(inHand);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Hand other = (Hand) obj;
+		return Objects.equals(inHand, other.inHand);
+	}
+
 }

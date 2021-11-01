@@ -17,16 +17,22 @@ public class BlackJackApp {
 
 		int userChoice = 0;
 		boolean correctChoice = false;
-		boolean keepPlaying = false;
+		boolean keepPlaying = true;
 		boolean gotValidInput = false;
-		boolean dealerBust = false;
-		boolean playerBust = false;
+		boolean blackJackWin;
+		boolean dealerBust;
+		boolean playerBust;
+		boolean doubleAceBust;
 
-		System.out.println("Welcome to the House of Spades.\nLet's play some blackjack!");
+		System.out.println("Welcome to the House of Spades.\nLet's play some blackjack!\n");
 
 		do {
 			dealer.setUpGame();
 			gotValidInput = false;
+			playerBust = false;
+			dealerBust = false;
+			doubleAceBust = false;
+			blackJackWin = false;
 
 			int i = 0;
 			while (i < 2) {
@@ -35,26 +41,34 @@ public class BlackJackApp {
 				i++;
 			}
 
-			System.out.print("Player Hand:  ");
-			player.showHand(); // player: shows hand
-			player.displayTotalHandValue(); // player displays total value of cards
+			showHandAndTotalValue(player);
 			System.out.print("Dealer Hand:  ");
 			System.out.print("\u2B1C ");
 			dealer.hand.showTopCard();
 
-			if (dealer.hasBlackjack(player) == true && dealer.hasBlackjack(dealer)) {
-				System.out.println("Push");
-			} else if (dealer.hasBlackjack(player)) {
-				System.out.println("Blackjack. Player wins.");
-				dealer.showHand();
-				System.out.println();
-			} else if (dealer.hasBlackjack(dealer)) {
-				System.out.println("Blackjack. dealer wins.");
+			blackJackWin = checkBlackJack(player, dealer, blackJackWin);
+
+			if (!blackJackWin) {
+				if (dealer.checkIfValueOver21(player) && dealer.checkIfValueOver21(dealer)) {
+					doubleAceBust = true;
+					System.out.println("\nPush");
+					winnerPrintDisplay(player, dealer);
+				} else if (dealer.checkIfValueOver21(player)) {
+					playerBust = true;
+					doubleAceBust = true;
+					System.out.println("\nDealer wins");
+					winnerPrintDisplay(player, dealer);
+				} else if (dealer.checkIfValueOver21(dealer)) {
+					dealerBust = true;
+					doubleAceBust = true;
+					System.out.println("\nPlayer wins");
+					winnerPrintDisplay(player, dealer);
+				}
 			}
 
 			// loops through and asks player to hit/stand. Checks if players hand is over 21
 			// if player hand is over 21 print bust and ask if wants to play again.
-			if (dealer.hasBlackjack(player) == true || dealer.hasBlackjack(dealer) == true) {
+			if (blackJackWin == true || doubleAceBust == true) {
 			} else {
 				do {
 					while (!gotValidInput) {
@@ -62,11 +76,11 @@ public class BlackJackApp {
 							dealer.askPlayerHitOrStand();
 							userChoice = kb.nextInt();
 							kb.nextLine();
+							
 							// hit condition
 							if (userChoice == 1) {
-								dealer.cardToPlayer(player); // card to player
-								player.showHand(); // player: shows hand
-								player.displayTotalHandValue();
+								dealer.cardToPlayer(player); 
+								showHandAndTotalValue(player);
 								if (dealer.checkIfValueOver21(player) == true) {
 									dealer.handBusted21();
 									playerBust = true;
@@ -74,16 +88,19 @@ public class BlackJackApp {
 									break;
 								}
 								correctChoice = true;
+								
 								// stand condition
 							} else if (userChoice == 2) {
 								correctChoice = true;
 								gotValidInput = true;
 							} else {
-								System.out.println("Please press 1 to hit or 2 to stand.");
+								System.out.println("That input was incorrect.\nPlease press 1 to hit or 2 to stand.");
+								showHandAndTotalValue(player);
+								System.out.println();
 							}
 						} catch (InputMismatchException e) {
-							System.out.println("That input was incorrect.");
-							player.showHand();
+							System.out.println("That input was incorrect.\nPlease press 1 to hit or 2 to stand.");
+							showHandAndTotalValue(player);
 							kb.nextLine();
 							System.out.println();
 						}
@@ -93,64 +110,51 @@ public class BlackJackApp {
 
 				// auto-deal to dealer if under 17 and player did not bust
 				if (!playerBust) {
-					System.out.println("Dealer Hand");
-					dealer.showHand();
-					dealer.displayTotalHandValue();
+					showHandAndTotalValue(dealer);
 					boolean equalOrOver17 = false;
 					equalOrOver17 = dealer.checkIfValueIsEqualToOrOver17(dealer);
 					while (!equalOrOver17) {
-						dealer.cardToPlayer(dealer); // card to dealer
-//						System.out.println("\nDealer Hand:");
-						dealer.showHand();
-						dealer.displayTotalHandValue();
-						if (dealer.checkIfValueIsEqualToOrOver17(dealer) == true) {
-							break;
-						}
+						dealer.cardToPlayer(dealer);
+						showHandAndTotalValue(dealer);
 						if (dealer.checkIfValueOver21(dealer) == true) {
 							System.out.println("Dealer busted.");
 							dealerBust = true;
+							break;
+						}
+						if (dealer.checkIfValueIsEqualToOrOver17(dealer) == true) {
 							break;
 						}
 					}
 				}
 
 				// compare totals and declare tie or winner
-				if (player.hand.getHandValue() > dealer.hand.getHandValue() && playerBust != true || dealerBust == true) {
-					System.out.println("\nPlayer wins\n");
-				} else if (player.hand.getHandValue() == dealer.hand.getHandValue()) {
-					System.out.println("\nPush\n");
+				if (player.hand.getHandValue() > dealer.hand.getHandValue() && playerBust != true
+						|| (dealerBust == true && playerBust != true)) {
+					System.out.println("\nPlayer wins");
+					winnerPrintDisplay(player, dealer);
+				} else if (player.hand.getHandValue() == dealer.hand.getHandValue()
+						|| (dealerBust == true && playerBust == true)) {
+					System.out.println("\nPush");
+					winnerPrintDisplay(player, dealer);
 				} else {
-					System.out.println("\nDealer wins\n");
+					System.out.println("\nDealer wins");
+					winnerPrintDisplay(player, dealer);
 				}
-
-				keepPlaying = playAgain(kb, keepPlaying);
-				
-//				USED FOR TESTING DELETE FROM FINAL SUBMISSION ====================================================================
-//				keepPlaying = true;
-
 			}
+
+			keepPlaying = playAgain(kb, keepPlaying);
+
 			player.hand.clearHand();
 			dealer.hand.clearHand();
+
 		} while (keepPlaying);
 
-		// CODE WORKS FOR DEALING TWO CARDS TO PLAYER AND DEALER
-//		dealer.cardToPlayer(player);	// player first card
-//		dealer.cardToPlayer(dealer);	// dealer first card
-//		
-//		dealer.cardToPlayer(player);	// player second card
-//		System.out.println("PLAYER HAND:");
-//		player.showHand();	// player shows both cards
-//		player.displayTotalHandValue();		// player displays total value of cards
-//		
-//		System.out.println();
-//		dealer.cardToPlayer(dealer);	// dealer second card
-//		System.out.println("DEALER HAND:");
-//		dealer.showTopCardDealer();
-		System.out.println("PROGRAM ENDED");
+		System.out.println("\nThanks for playing at the House of Spades!");
+		kb.close();
 	}
 
-	public boolean playAgain(Scanner kb, boolean keepPlaying) {
-		System.out.println("Play again, yes or no?");
+	private boolean playAgain(Scanner kb, boolean keepPlaying) {
+		System.out.println("\nPlay again, yes or no?");
 		String userAnswer = kb.nextLine();
 		if (userAnswer.equalsIgnoreCase("no")) {
 			keepPlaying = false;
@@ -159,4 +163,46 @@ public class BlackJackApp {
 		}
 		return keepPlaying;
 	}
+
+	private void winnerPrintDisplay(Player player, Dealer dealer) {
+		showHandAndTotalValue(player);
+		showHandAndTotalValue(dealer);
+	}
+
+	private void showHandAndTotalValue(Player player) {
+		if (player instanceof Dealer) {
+			System.out.print("Dealer Hand:  ");
+		} else {
+			System.out.print("Player Hand:  ");
+		}
+		player.showHand();
+		player.displayTotalHandValue();
+	}
+
+	private boolean checkBlackJack(Player player, Dealer dealer, boolean blackJackWin) {
+		if (dealer.hasBlackjack(player) == true && dealer.hasBlackjack(dealer)) {
+			System.out.println("\nPush");
+			blackJackWin = true;
+		} else if (dealer.hasBlackjack(player)) {
+			System.out.println("\n*********  Blackjack. Player wins.  *********");
+			blackJackWin = true;
+		} else if (dealer.hasBlackjack(dealer)) {
+			System.out.println("\n*********  Blackjack. Dealer wins.  *********");
+			blackJackWin = true;
+		}
+		
+		if(blackJackWin) {
+		showHandAndTotalValue(player);
+		showHandAndTotalValue(dealer);
+		System.out.println();
+		}
+		
+		return blackJackWin;
+	}
+
+	@Override
+	public String toString() {
+		return "BlackJackApp: Runs blackjack program";
+	}
+
 }

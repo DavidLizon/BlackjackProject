@@ -17,7 +17,6 @@ public enum Rank {
 	
 	@Override
 	public String toString() {
-//		String valueAsString = "" + value;
 		return face;
 	}
 	
